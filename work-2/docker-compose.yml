@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pr2-app
+    ports:
+      - "8082:80"
+    volumes:
+      - ./task-1-drawer:/var/www/html/task-1-drawer
+      - ./task-2-sorting:/var/www/html/task-2-sorting
+      - ./task-3-server-info:/var/www/html/task-3-server-info
+      - ./index.php:/var/www/html/index.php
