@@ -1,0 +1,7 @@
+{
+    "name": "user/work6",
+    "require": {
+        "fakerphp/faker": "^1.23",
+        "amenadiel/jpgraph": "^4.0"
+    }
+}

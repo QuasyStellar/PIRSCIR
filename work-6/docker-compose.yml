@@ -1,0 +1,41 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: work-6-nginx
+    ports:
+      - "8086:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - apache
+
+  apache:
+    build:
+      context: .
+      dockerfile: ./apache/Dockerfile
+    container_name: work-6-apache
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  db:
+    image: mysql:8.0
+    container_name: work-6-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restaurant_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:latest
+    container_name: work-6-redis
